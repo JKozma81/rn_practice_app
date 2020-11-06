@@ -4,88 +4,83 @@ import HealtDisplay from '../components/HealtDisplay';
 import PhraseDisplay from '../components/PhraseDisplay';
 import QuertyKeboard from '../components/QuertyKeboard';
 
-export default function GameScreen(props) {
-  const [playerLife, setPlayerLife] = useState(5);
-  const [winCondition, setWinCondition] = useState('');
-  const [letterCount, setLetterCount] = useState(0);
+const splitPhrase = (phrase) => {
+  const splittedPhrase = phrase.split(' ').map((word) => {
+    return word.split('').map((letter) => ({
+      visible: false,
+      letter: letter,
+    }));
+  });
+  return splittedPhrase;
+};
 
-  const splitPhrase = (phrase) => {
-    const splittedPhrase = phrase.split(' ').map((word) => {
-      return word.split('').map((letter) => ({
-        visible: false,
-        letter: letter,
-      }));
+const checkLetter = (searchedLetter, wordsArray) => {
+  const result = wordsArray.reduce((accumulator, currentValue) => {
+    currentValue.forEach((letter) => {
+      if (letter.letter === searchedLetter) {
+        accumulator += 1;
+      }
     });
-    return splittedPhrase;
-  };
+    return accumulator;
+  }, 0);
+  return result;
+};
 
-  const [wordsAndLetters, setWordsAndLetters] = useState(
-    splitPhrase(props.phrase)
+const countRemainingLetters = (wordsArray) => {
+  return wordsArray.reduce(
+    (accumulator, word) =>
+      (accumulator += word.filter((letter) => !letter.visible).length),
+    0
+  );
+};
+
+const revealLetter = (searchArray, searchedLetter) => {
+  const revealedLetters = searchArray.map((word) =>
+    word.map((letter) =>
+      searchedLetter === letter.letter
+        ? { ...letter, visible: true }
+        : { ...letter }
+    )
   );
 
-  useEffect(() => {
-    const remainingLetters = wordsAndLetters.reduce(
-      (accumulator, word) =>
-        (accumulator += word.filter((letter) => !letter.visible).length),
-      0
-    );
+  return revealedLetters;
+};
 
-    setLetterCount(remainingLetters);
-  });
+export default function GameScreen({ phrase }) {
+  const [wordsAndLetters, setWordsAndLetters] = useState(splitPhrase(phrase));
+  const [playerLife, setPlayerLife] = useState(5);
+  const [winCondition, setWinCondition] = useState('');
 
-  const checkLetter = (searchedLetter) => {
-    const result = wordsAndLetters.reduce((accumulator, currentValue) => {
-      currentValue.forEach((letter) => {
-        if (letter.letter === searchedLetter) {
-          accumulator += 1;
-        }
-      });
-      return accumulator;
-    }, 0);
-    return result;
-  };
+  const [lettersRemaining, setLettersRemaining] = useState(
+    countRemainingLetters(wordsAndLetters)
+  );
 
-  const checkForWin = (letterCount) => {
-    // const remainingLetters = wordsAndLetters.reduce(
-    //   (accumulator, word) =>
-    //     (accumulator += word.filter((letter) => !letter.visible).length),
-    //   0
-    // );
-
-    if (!letterCount && playerLife) {
-      setWinCondition('win');
-      console.log(winCondition);
+  const checkForWin = () => {
+    console.log('in check');
+    if (!lettersRemaining && playerLife) {
+      // setWinCondition('win');
+      console.log('win');
     }
 
-    if (letterCount && !playerLife) {
-      setWinCondition('lost');
-      console.log(winCondition);
+    if (lettersRemaining && !playerLife) {
+      // setWinCondition('lost');
+      console.log('lost');
     }
   };
 
-  const revealLetter = (searchedLetter) => {
-    if (checkLetter(searchedLetter) > 0) {
-      const revealedLetters = wordsAndLetters.map((word) =>
-        word.map((letter) =>
-          searchedLetter === letter.letter
-            ? { visible: true, letter: letter.letter }
-            : letter
-        )
-      );
+  const handleButtonPress = (button) => {
+    if (checkLetter(button, wordsAndLetters) > 0) {
+      const revealedLetters = revealLetter(wordsAndLetters, button);
       setWordsAndLetters(revealedLetters);
+      setLettersRemaining(revealedLetters);
     } else {
       setPlayerLife((prevValue) => prevValue - 1);
     }
   };
 
-  // useEffect(() => {
-  //   checkForWin(wordsAndLetters);
-  // });
-
-  const handleButtonPress = (button) => {
-    revealLetter(button);
-    checkForWin(letterCount);
-  };
+  useEffect(() => {
+    checkForWin();
+  }, [wordsAndLetters, playerLife]);
 
   return (
     <View style={styles.container}>
