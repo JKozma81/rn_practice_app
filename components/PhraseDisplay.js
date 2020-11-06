@@ -1,20 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import LetterDisplay from './LetterDisplay';
 
 export default function PhraseDisplay(props) {
-  const [phrase, setPhrase] = useState(props.phrase);
-
-  const wordsAndLetters = phrase.split(' ').map((word) => {
-    return word.split('').map((letter) => ({
-      visible: false,
-      letter: letter,
-    }));
-  });
-
   return (
     <View style={styles.container}>
-      {wordsAndLetters.map((word, index) => (
+      {props.phrase.map((word, index) => (
         <View style={styles.wordContainer} key={index}>
           {word.map((letter, index) => (
             <LetterDisplay letter={letter} key={`${letter}_${index}`} />

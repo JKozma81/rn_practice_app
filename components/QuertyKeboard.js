@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import QuertyButton from './QuertyButton';
 
-export default function QuertyKeboard() {
+export default function QuertyKeboard(props) {
   const buttons = [
     ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
     ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
@@ -13,7 +13,9 @@ export default function QuertyKeboard() {
       {buttons.map((buttonRow, index) => (
         <View style={styles.buttonRow} key={index}>
           {buttonRow.map((quertyKey) => (
-            <QuertyButton key={quertyKey}>{quertyKey}</QuertyButton>
+            <QuertyButton key={quertyKey} {...props} keyboardButton={quertyKey}>
+              {quertyKey}
+            </QuertyButton>
           ))}
         </View>
       ))}

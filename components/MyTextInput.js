@@ -4,12 +4,7 @@ import { View, StyleSheet, TextInput } from 'react-native';
 export default function MyTextInput(props) {
   return (
     <View style={styles.container}>
-      <TextInput
-        onChange={props.onChange}
-        value={props.value}
-        placeholder={props.placeholder}
-        styles={{ ...styles.textInput, ...props.styles }}
-      />
+      <TextInput {...props} styles={{ ...styles.textInput, ...props.styles }} />
     </View>
   );
 }

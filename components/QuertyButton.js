@@ -4,7 +4,10 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 export default function QuertyButton(props) {
   const [isDisabled, setIsDisabled] = useState(false);
 
-  const clickHandler = () => setIsDisabled(true);
+  const clickHandler = () => {
+    props.handleButtonPress(props.keyboardButton);
+    setIsDisabled(true);
+  };
 
   const clickableButton = (
     <View style={styles.buttonContainer}>

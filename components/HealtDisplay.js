@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 
-export default function HealtDisplay() {
-  const [playerLife, setPlayerLife] = useState(5);
-
+export default function HealtDisplay(props) {
   const displayedLifes = [];
 
-  for (let i = 1; i <= playerLife; i++) {
+  for (let i = 1; i <= props.playerLife; i++) {
     displayedLifes.push(
       <Image
+        key={`heart_${i}`}
         source={require('../assets/images/liveHeart.png')}
         style={styles.heart}
       />

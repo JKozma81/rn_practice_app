@@ -1,18 +1,31 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import MyPrimaryButton from '../components/MyPrimaryButton';
 import MyTextInput from '../components/MyTextInput';
 
-export default function StartScreen() {
+export default function StartScreen(props) {
+  const [value, onChangeText] = useState('');
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Phrase Hunter</Text>
-      <View style={styles.nameInputContainer}>
-        <Text>Name:</Text>
-        <MyTextInput placeholder="Enter your name" />
-        <MyPrimaryButton>Start the Game</MyPrimaryButton>
+    <KeyboardAvoidingView behavior={'position'}>
+      <View style={styles.container}>
+        <Text style={styles.header}>Phrase Hunter</Text>
+        <View style={styles.nameInputContainer}>
+          <Text>Name:</Text>
+          <MyTextInput
+            value={value}
+            onChangeText={(text) => onChangeText(text)}
+            placeholder="Enter your name"
+          />
+          <MyPrimaryButton
+            onPress={() => {
+              props.startGame(value);
+            }}
+          >
+            Start the Game
+          </MyPrimaryButton>
+        </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
