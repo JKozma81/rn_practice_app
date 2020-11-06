@@ -1,11 +1,13 @@
 import React from 'react';
 import { StyleSheet, SafeAreaView } from 'react-native';
+import GameScreen from './screens/GameScreen';
 import StartScreen from './screens/StartScreen';
 
 export default function App() {
   return (
     <SafeAreaView style={styles.container}>
-      <StartScreen />
+      {/* <StartScreen /> */}
+      <GameScreen />
     </SafeAreaView>
   );
 }

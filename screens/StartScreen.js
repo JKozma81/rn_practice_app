@@ -19,7 +19,6 @@ export default function StartScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    color: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },

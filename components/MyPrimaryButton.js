@@ -3,11 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 export default function MyPrimaryButton(props) {
   return (
-    <View
-      style={{ ...styles.buttonContainer, ...props.styles }}
-      onPress={props.onPress}
-    >
-      <TouchableOpacity>
+    <View style={{ ...styles.buttonContainer, ...props.styles }}>
+      <TouchableOpacity onPress={props.onPress}>
         <Text style={styles.btnText}>{props.children}</Text>
       </TouchableOpacity>
     </View>
